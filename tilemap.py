@@ -1,5 +1,7 @@
 import pygame
 import pytmx
+from items import Item
+from settings import PATH_TO_ITEM
 
 class TileMap:
     """Класс загрузки карты из Tiled (TMX)"""
@@ -27,6 +29,18 @@ class TileMap:
         tile_x = (player_rect.centerx // self.tilewidth) * self.tilewidth
         tile_y = (player_rect.centery // self.tileheight) * self.tileheight
         return (tile_x, tile_y) in self.walkable_tiles
+
+    def get_items(self):
+        """Получает все призы из слоя 'Items' и возвращает Group Items"""
+        items = pygame.sprite.Group()
+        items_coord = []
+        for obj in self.tmx_data.objects:
+            if obj.name == "Items":  # Фильтруем только призы
+                item_sprite = Item(obj.x, obj.y, pygame.image.load(PATH_TO_ITEM).convert_alpha())
+                items.add(item_sprite)
+                items_coord.append((obj.x, obj.y))
+            print(obj.name)
+        return items
 
 
 class TileRenderer:
