@@ -1,0 +1,158 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "",
+    "expandedProjectPaths": [
+    ],
+    "fileStates": {
+        "Basic_Furniture.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "Basic_Grass_Biom_things.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "Basic_Plants.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "Basic_tools_and_meterials.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "Bitmask references 1.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "Doors.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "Fences.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "Grass.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 5.5
+        },
+        "Hills.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 5.5
+        },
+        "Owlet_Monster_Walk_6.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "Setting menu.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "Sprite sheet for Basic Pack.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "Tilled_Dirt.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "Tilled_Dirt_Wide_v2.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 5.5
+        },
+        "Water.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 5.5
+        },
+        "Wooden_House_Roof_Tilset.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 5.5
+        },
+        "Wooden_House_Walls_Tilset.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "button.tmx": {
+            "scale": 1.9831249999999998,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 80.17648912700915,
+                "y": 24.20422313268199
+            }
+        },
+        "button_pushtmx.tmx": {
+            "scale": 1.9831249999999998,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 80.17648912700915,
+                "y": 16.136148755121326
+            }
+        },
+        "map1tmx.tmx": {
+            "scale": 0.33,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 81.81818181818181,
+                "y": 1027.2727272727275
+            }
+        },
+        "map2.tmx": {
+            "scale": 1.5318749999999999,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 71.1546307629539,
+                "y": 159.93472052223586
+            }
+        },
+        "map3.tmx": {
+            "scale": 0.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 198,
+                "y": 320
+            }
+        },
+        "start_menu.tmx": {
+            "scale": 0.75,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 94.66666666666666,
+                "y": 171.99999999999994
+            }
+        }
+    },
+    "last.exportedFilePath": "C:/Users/Asus/PycharmProjects/final_fame/data/levels",
+    "last.imagePath": "C:/Users/Asus/PycharmProjects/final_fame/archive/The Fantasy Tileset - Animated Character/Main Character",
+    "map.height": 1,
+    "map.lastUsedExportFilter": "CSV файлы (*.csv)",
+    "map.lastUsedFormat": "tmx",
+    "map.layerDataFormat": "1",
+    "map.tileHeight": 32,
+    "map.tileWidth": 32,
+    "map.width": 4,
+    "openFiles": [
+    ],
+    "project": "map1.tiled-project",
+    "recentFiles": [
+        "map2.tmx",
+        "map1tmx.tmx",
+        "button_pushtmx.tmx",
+        "button.tmx",
+        "Sprite sheet for Basic Pack.tsx",
+        "Owlet_Monster_Walk_6.tsx",
+        "map3.tmx",
+        "start_menu.tmx",
+        "Setting menu.tsx",
+        "Basic_tools_and_meterials.tsx",
+        "Tilled_Dirt_Wide_v2.tsx",
+        "Tilled_Dirt.tsx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 16,
+        "width": 16
+    }
+}
