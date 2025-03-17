@@ -4,6 +4,7 @@ from settings import TILES, ENEMY_SPEED, PATH_TO_ENEMY
 class Enemy(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
+
         self.sprite_size = (TILES, TILES)  # Размер спрайта
 
         # Загружаем спрайт-лист
@@ -20,6 +21,9 @@ class Enemy(pygame.sprite.Sprite):
 
         # Корректируем позицию (если спрайт больше тайла)
         self.rect = self.image.get_rect(midbottom=(x + TILES // 2, y + TILES))
+        self.abs_x = x
+        self.abs_y = y
+
 
     def load_sprites(self, sheet):
         """Разрезает спрайт-лист, учитывая 8 кадров в 1 ряду"""

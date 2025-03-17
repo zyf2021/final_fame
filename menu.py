@@ -33,7 +33,7 @@ class MainMenu:
              "image": self.button_map2,
              "push_image": self.button_push_map2,
              "pos": (TILES * 6, TILES * 8),
-             "map": "data/levels/map2.tmx",
+             "map": "data/levels/map5.tmx",
              "status": False
              },
             {"id": "map3",

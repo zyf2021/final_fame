@@ -1,9 +1,13 @@
 import pygame
+from datetime import datetime
+import pandas as pd
 from tilemap import GameMap
-from settings import BLACK, WIDTH, HEIGHT, PATH_TO_ITEM, WHITE, WIN_SCORE, FREDOKA, PATH_TO_SCORE_TABLE, TILES
+from settings import BLACK, WIDTH, HEIGHT, BRAUN, PATH_TO_ITEM, WHITE, WIN_SCORE, FREDOKA, PATH_TO_SCORE_TABLE, TILES, \
+    PATH_TO_PLAYER
 from player import Player
 from game_over import GameOver
 from items import Item
+from camera import Camera
 
 
 class Game:
@@ -19,19 +23,18 @@ class Game:
 
         # Загружаем карту
         self.game_map = GameMap(level_file)
-        self.items = self.game_map.tilemap.get_items()
-        self.enemies = self.game_map.tilemap.load_enemies()
+        self.items = self.game_map.get_items()
+        self.enemies = self.game_map.load_enemies()
+
+        # Создаем камеру
+        self.camera = Camera(self.game_map.width, self.game_map.height)
 
         # Группы спрайтов
-        player_sprite_sheet = pygame.image.load("data/assets/player.png").convert_alpha()
+        player_sprite_sheet = pygame.image.load(PATH_TO_PLAYER).convert_alpha()
         self.player = Player(16, 208, player_sprite_sheet, self.game_map, self.enemies)  # Начальные координаты
-
-
 
         self.all_sprites = pygame.sprite.Group()
         self.all_sprites.add(self.player)
-
-
 
     def draw_score(self):
         """Рисует текущий счет на экране"""
@@ -42,14 +45,20 @@ class Game:
         score_text = self.font.render(f"{self.score}", True, WHITE)
         self.screen.blit(score_text, (TILES * 3, 28))
 
+    def add_score(self, score):
+        data_score = pd.read_csv(PATH_TO_SCORE_TABLE)
+        data_score.loc[len(data_score)] = [datetime.now().isoformat(), score]
+        data_score.to_csv(PATH_TO_SCORE_TABLE, index=False)
+
     def game_over(self):
         """Финальный экран при победе"""
         final_screen = GameOver(self.screen)
         final_screen.score = self.score  # Передаем итоговый счет
+        # self.add_score(self.score)
 
         while True:
             final_screen.draw()
-            action = final_screen.handle_events() # "data/levels/map4.tmx"
+            action = final_screen.handle_events()  # "data/levels/map4.tmx"
             if action:  # Если нажали Enter, запускаем игру заново
                 self.reset_game(action)
                 return  # Выходим из функции
@@ -58,7 +67,6 @@ class Game:
         """Сбрасываем игру после экрана Game Over"""
         self.__init__(map)  # Перезапускаем игру с той же картой
         self.run()  # Запускаем цикл заново
-
 
     def run(self):
         # start_screen(self.screen, self.clock)  # Показ заставки перед игрой
@@ -71,24 +79,40 @@ class Game:
             # Обновляет состояние игры (игрок, анимации)
             keys = pygame.key.get_pressed()
             self.all_sprites.update(keys)
-            self.enemies.update()
+            # self.enemies.update()
+            self.items.update(self.camera)  # ВАЖНО! Перед столкновением
+
+
 
             # Проверяем сбор призов
-            collected_items = pygame.sprite.spritecollide(self.player, self.items, True) # The dokill argument
-            # is a bool. If set to True,
-            # all Sprites that collide will be removed from the Group.
-            self.score += len(collected_items)  # За каждый собранный приз прибавляем очки
+            collected_items = pygame.sprite.spritecollide(self.player, self.items, True)
+            self.score += len(collected_items)
+            # collected_enemies = pygame.sprite.spritecollide(self.player, self.enemies, True)
+            # self.score += len(collected_enemies) * 10
 
-            collected_enemies = pygame.sprite.spritecollide(self.player, self.enemies, True)
-            self.score += len(collected_enemies) * 10
+            # Камера следует за игроком
+            self.camera.update(self.player)
 
-            # Отрисовываем карту и спрайты
-            self.screen.fill(BLACK)  # Очищаем экран
-            self.game_map.draw(self.screen)  # Рисуем карту
-            self.all_sprites.draw(self.screen)  # Рисуем игрока
-            self.items.draw(self.screen)  # Отрисовка оставшихся призов
-            self.enemies.draw(self.screen)
-            self.draw_score()  # Отображаем счет на экране
+            # Очищаем экран
+            self.screen.fill(BRAUN)
+            # Рисуем карту
+            self.game_map.draw(self.screen, self.camera)
+
+            # Применяем камеру ко всем спрайтам
+            for sprite in self.all_sprites:
+                self.camera.apply(sprite)
+            for sprite in self.items:
+                self.camera.apply(sprite)
+            # for sprite in self.enemies:
+            #     self.camera.apply(sprite)
+
+            # Рисуем все
+            self.all_sprites.draw(self.screen)
+            self.items.draw(self.screen)
+            # self.enemies.draw(self.screen)
+
+            # Отображаем счет на экране
+            self.draw_score()
 
             pygame.display.flip()
             self.clock.tick(60)
@@ -97,10 +121,4 @@ class Game:
                 running = False
                 self.game_over()
 
-
         pygame.quit()
-
-
-
-
-

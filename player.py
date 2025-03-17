@@ -14,8 +14,12 @@ class Player(pygame.sprite.Sprite):
 
         self.score = 0  # Счетчик очков
 
+        self.abs_x = x
+        self.abs_y = y
+
         self.image = self.sprites[self.direction][self.frame_index]
         self.rect = pygame.Rect(x, y, TILES, TILES)
+
         self.gamemap = gamemap
         self.enemies = enemies
 
@@ -30,7 +34,7 @@ class Player(pygame.sprite.Sprite):
         }
 
         for row, direction in enumerate(sprites.keys()):
-            for col in range(4):  # Предположим, что у нас 4 кадра анимации
+            for col in range(4):  # 4 кадра анимации
                 frame = sprite_sheet.subsurface(
                     pygame.Rect(col * sprite_size, row * sprite_size, sprite_size, sprite_size)
                 )
@@ -54,9 +58,22 @@ class Player(pygame.sprite.Sprite):
         elif keys[pygame.K_d]:  # Вправо
             self.direction = "right"
             dx = self.speed
-        new_rect = self.rect.move(dx, dy)
-        if self.gamemap.check_walkable(new_rect):
-            self.rect = new_rect
+
+        # Проверяем, можно ли идти
+        new_abs_x = self.abs_x + dx
+        new_abs_y = self.abs_y + dy
+
+        new_rect = pygame.Rect(new_abs_x, new_abs_y, self.rect.width, self.rect.height)
+
+        if self.gamemap.check_walkable(new_rect): # чтобы не было сдви
+            self.abs_x = new_abs_x
+            self.abs_y = new_abs_y
+
+        # проверить нужны ли rect
+        # self.rect.x = self.abs_x
+        # self.rect.y = self.abs_y
+        # ds
+
         if dx != 0 or dy != 0:
             self.animate()
 
