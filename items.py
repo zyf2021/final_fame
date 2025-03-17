@@ -1,9 +1,13 @@
 import pygame
+from settings import TILES, PATH_TO_ITEM
 
 class Item(pygame.sprite.Sprite):
-    def __init__(self, x, y, image):
+    def __init__(self, x, y):
         super().__init__()
-        self.image = image
+
+        self.sprite_size = (TILES, TILES)
+        self.image = pygame.image.load(PATH_TO_ITEM).convert_alpha()
+
         self.rect = self.image.get_rect(topleft=(x, y))
         self.abs_x = x
         self.abs_y = y

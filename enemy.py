@@ -5,22 +5,16 @@ class Enemy(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
 
-        self.sprite_size = (TILES, TILES)  # Размер спрайта
-
-        # Загружаем спрайт-лист
+        self.sprite_size = (TILES, TILES)
         self.sprite_sheet = pygame.image.load(PATH_TO_ENEMY).convert_alpha()
 
-        # Загружаем idle-анимацию (1 ряд, 8 кадров)
+        # Загружаем idle-анимацию
         self.sprites_idle = self.load_sprites(self.sprite_sheet)
-
         self.frame_index = 0
         self.animation_timer = 0
-
-        # Устанавливаем стартовый кадр
         self.image = self.sprites_idle[self.frame_index]
 
-        # Корректируем позицию (если спрайт больше тайла)
-        self.rect = self.image.get_rect(midbottom=(x + TILES // 2, y + TILES))
+        self.rect = self.image.get_rect(topleft=(x, y))
         self.abs_x = x
         self.abs_y = y
 
@@ -36,10 +30,6 @@ class Enemy(pygame.sprite.Sprite):
             sprites.append(frame)
         return sprites
 
-    def update(self):
-        """Обновляет анимацию"""
-        self.animate()
-
     def animate(self):
         """Анимирует врага"""
         self.animation_timer += 1
@@ -47,3 +37,9 @@ class Enemy(pygame.sprite.Sprite):
             self.animation_timer = 0
             self.frame_index = (self.frame_index + 1) % len(self.sprites_idle)
             self.image = self.sprites_idle[self.frame_index]
+
+    def update(self):
+        """Обновляет анимацию"""
+        self.animate()
+
+

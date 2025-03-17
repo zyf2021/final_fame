@@ -21,15 +21,14 @@ PATH_TO_BACKGROUND_IMAGE = "data/assets/background.png"
 
 PATH_TO_START_MENU = "data/assets/start_menu.png"
 PATH_TO_FINISH_MENU = "data/assets/final_game.png"
-
 PATH_TO_SCORE_TABLE = "data/assets/score_table.png"
 
 PATH_TO_PLAYER = "data/assets/player.png"
 PATH_TO_ITEM = "data/assets/item.png"
 PATH_TO_ENEMY = "data/assets/enemy.png"
 
-
-PATH_TO_DATA_SCORE = "data/storage/data_score.csv"
+# csv file
+PATH_TO_DATA_SCORE = "data/storage/scores_utf_8_spec.csv"
 
 
 WIN_SCORE = 40

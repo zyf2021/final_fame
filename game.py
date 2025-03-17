@@ -1,8 +1,9 @@
 import pygame
 from datetime import datetime
 import pandas as pd
+import chardet
 from tilemap import GameMap
-from settings import BLACK, WIDTH, HEIGHT, BRAUN, PATH_TO_ITEM, WHITE, WIN_SCORE, FREDOKA, PATH_TO_SCORE_TABLE, TILES, \
+from settings import BLACK, WIDTH, HEIGHT, BRAUN, PATH_TO_ITEM, WHITE, WIN_SCORE, FREDOKA, PATH_TO_SCORE_TABLE, PATH_TO_DATA_SCORE, TILES, \
     PATH_TO_PLAYER
 from player import Player
 from game_over import GameOver
@@ -23,7 +24,7 @@ class Game:
 
         # Загружаем карту
         self.game_map = GameMap(level_file)
-        self.items = self.game_map.get_items()
+        self.items = self.game_map.load_items()
         self.enemies = self.game_map.load_enemies()
 
         # Создаем камеру
@@ -46,15 +47,17 @@ class Game:
         self.screen.blit(score_text, (TILES * 3, 28))
 
     def add_score(self, score):
-        data_score = pd.read_csv(PATH_TO_SCORE_TABLE)
+        with open(PATH_TO_DATA_SCORE, 'rb') as f:
+            result = chardet.detect(f.read())
+        data_score = pd.read_csv(PATH_TO_DATA_SCORE, encoding=result['encoding'])
         data_score.loc[len(data_score)] = [datetime.now().isoformat(), score]
-        data_score.to_csv(PATH_TO_SCORE_TABLE, index=False)
+        data_score.to_csv(PATH_TO_DATA_SCORE, index=False)
 
     def game_over(self):
         """Финальный экран при победе"""
         final_screen = GameOver(self.screen)
         final_screen.score = self.score  # Передаем итоговый счет
-        # self.add_score(self.score)
+        self.add_score(self.score)
 
         while True:
             final_screen.draw()
@@ -79,7 +82,7 @@ class Game:
             # Обновляет состояние игры (игрок, анимации)
             keys = pygame.key.get_pressed()
             self.all_sprites.update(keys)
-            # self.enemies.update()
+            self.enemies.update()
             self.items.update(self.camera)  # ВАЖНО! Перед столкновением
 
 
@@ -87,8 +90,8 @@ class Game:
             # Проверяем сбор призов
             collected_items = pygame.sprite.spritecollide(self.player, self.items, True)
             self.score += len(collected_items)
-            # collected_enemies = pygame.sprite.spritecollide(self.player, self.enemies, True)
-            # self.score += len(collected_enemies) * 10
+            collected_enemies = pygame.sprite.spritecollide(self.player, self.enemies, True)
+            self.score += len(collected_enemies) * 10
 
             # Камера следует за игроком
             self.camera.update(self.player)
@@ -103,13 +106,13 @@ class Game:
                 self.camera.apply(sprite)
             for sprite in self.items:
                 self.camera.apply(sprite)
-            # for sprite in self.enemies:
-            #     self.camera.apply(sprite)
+            for sprite in self.enemies:
+                self.camera.apply(sprite)
 
             # Рисуем все
             self.all_sprites.draw(self.screen)
             self.items.draw(self.screen)
-            # self.enemies.draw(self.screen)
+            self.enemies.draw(self.screen)
 
             # Отображаем счет на экране
             self.draw_score()

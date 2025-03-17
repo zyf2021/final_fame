@@ -38,13 +38,12 @@ class GameMap:
 
         return (tile_x, tile_y) in self.walkable_tiles
 
-    def get_items(self):
+    def load_items(self):
         """Получает все призы из слоя 'Items' и возвращает Group Items"""
         items = pygame.sprite.Group()
         for obj in self.tmx_data.objects:
-            if obj.name == "Items":  # Фильтруем только призы
-                item_sprite = Item(obj.x, obj.y, pygame.image.load(PATH_TO_ITEM).convert_alpha())
-                items.add(item_sprite)
+            if obj.name == "Items":
+                items.add(Item(obj.x, obj.y))
         return items
 
     def load_enemies(self):
@@ -52,8 +51,7 @@ class GameMap:
         enemies = pygame.sprite.Group()
         for obj in self.tmx_data.objects:
             if obj.name == "Enemy":
-                enemy = Enemy(obj.x, obj.y)
-                enemies.add(enemy)  # Добавляем врага в группу
+                enemies.add(Enemy(obj.x, obj.y))
         return enemies
 
     def draw_background(self, screen, camera):

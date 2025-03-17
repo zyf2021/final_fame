@@ -1,10 +1,18 @@
 import pygame
 import sys
-from settings import WIDTH, HEIGHT, TILES, FREDOKA, PATH_TO_START_MENU, WHITE
+import pandas as pd
+import chardet
+from pygame.examples.aliens import Score
+
+from settings import WIDTH, HEIGHT, TILES, FREDOKA, PATH_TO_START_MENU, WHITE, PATH_TO_DATA_SCORE
+from datetime import datetime
 
 class MainMenu:
     def __init__(self, screen):
         self.screen = screen
+
+        self.scores = self.load_scores()
+
         self.background = pygame.image.load(PATH_TO_START_MENU)
 
         # Загружаем изображения кнопок
@@ -62,6 +70,13 @@ class MainMenu:
              },
         ]
 
+    # Загрузка данных из CSV
+    def load_scores(self):
+        with open(PATH_TO_DATA_SCORE, 'rb') as f:
+            result = chardet.detect(f.read())
+        data_score = pd.read_csv(PATH_TO_DATA_SCORE, encoding=result['encoding'])
+        return data_score
+
     def draw(self):
         """Рисуем меню с учетом нажатых кнопок."""
         self.screen.blit(self.background, (0, 0))
@@ -76,6 +91,17 @@ class MainMenu:
         font = pygame.font.Font(FREDOKA, 14)
         text = font.render("SCORES", True, WHITE)
         self.screen.blit(text, (TILES * 24, TILES * 5 - 8))
+
+        y_offset = TILES * 6
+        # Отображаем каждый результат из CSV
+        for date, score in self.scores.sort_values(ascending=False, by= "score")[:7].itertuples(index=False):
+            date = datetime.fromisoformat(date).strftime("%d %B %Y, %H:%M")
+
+            score_text = f"{score}"
+            score_surface = font.render(score_text, True, WHITE)
+            self.screen.blit(score_surface, (TILES * 20 + 60, y_offset))
+            y_offset += 24
+
 
         # Название игры
         font = pygame.font.Font(FREDOKA, 50)
