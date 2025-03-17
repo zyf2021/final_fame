@@ -1,6 +1,7 @@
 import pygame
 import pytmx
 from items import Item
+from enemy import Enemy
 from settings import PATH_TO_ITEM
 
 class TileMap:
@@ -33,14 +34,25 @@ class TileMap:
     def get_items(self):
         """Получает все призы из слоя 'Items' и возвращает Group Items"""
         items = pygame.sprite.Group()
-        items_coord = []
+        # items_coord = []
         for obj in self.tmx_data.objects:
             if obj.name == "Items":  # Фильтруем только призы
                 item_sprite = Item(obj.x, obj.y, pygame.image.load(PATH_TO_ITEM).convert_alpha())
                 items.add(item_sprite)
-                items_coord.append((obj.x, obj.y))
-            print(obj.name)
+                # items_coord.append((obj.x, obj.y))
+            # print(obj.name)
         return items
+
+    def load_enemies(self):
+        """Загружает врагов с карты и добавляет их в группу"""
+        enemies = pygame.sprite.Group()
+        for obj in self.tmx_data.objects:
+            if obj.name == "Enemy":
+                enemy = Enemy(obj.x, obj.y)
+                enemies.add(enemy)  # Добавляем врага в группу
+        return enemies
+
+
 
 
 class TileRenderer:

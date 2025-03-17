@@ -2,7 +2,7 @@ import pygame
 from settings import PLAYER_SPEED, PLAYER_ANIMATION_SPEED, TILES
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, x, y, sprite_sheet, gamemap):
+    def __init__(self, x, y, sprite_sheet, gamemap, enemies):
         super().__init__()
         # Загружаем спрайт-лист и режем его
         self.sprites = self.load_sprites(sprite_sheet)
@@ -12,9 +12,12 @@ class Player(pygame.sprite.Sprite):
         self.animation_timer = 0  # Время смены кадров
         self.speed = PLAYER_SPEED
 
+        self.score = 0  # Счетчик очков
+
         self.image = self.sprites[self.direction][self.frame_index]
         self.rect = pygame.Rect(x, y, TILES, TILES)
         self.gamemap = gamemap
+        self.enemies = enemies
 
     def load_sprites(self, sprite_sheet):
         """Разрезает спрайт-лист на кадры и создает словарь анимаций."""
@@ -38,7 +41,6 @@ class Player(pygame.sprite.Sprite):
     def update(self, keys):
         """Обновляет движение и анимацию игрока."""
         dx, dy = 0, 0
-
         # Определяем направление движения
         if keys[pygame.K_w]:  # Вверх
             self.direction = "up"
@@ -52,11 +54,9 @@ class Player(pygame.sprite.Sprite):
         elif keys[pygame.K_d]:  # Вправо
             self.direction = "right"
             dx = self.speed
-
         new_rect = self.rect.move(dx, dy)
         if self.gamemap.check_walkable(new_rect):
             self.rect = new_rect
-
         if dx != 0 or dy != 0:
             self.animate()
 

@@ -1,11 +1,11 @@
 import pygame
 import sys
-from settings import WIDTH, HEIGHT, TILES
+from settings import WIDTH, HEIGHT, TILES, FREDOKA, PATH_TO_START_MENU, WHITE
 
 class MainMenu:
     def __init__(self, screen):
         self.screen = screen
-        self.background = pygame.image.load("data/assets/start_menu_background.png")
+        self.background = pygame.image.load(PATH_TO_START_MENU)
 
         # Загружаем изображения кнопок
         self.button_map1 = pygame.image.load("data/assets/button.png")
@@ -20,21 +20,68 @@ class MainMenu:
 
         # Координаты кнопок
         self.buttons = [
-            {"id": "map1", "image": self.button_map1, "push_image": self.button_push_map1,
-             "pos": (TILES * 6, TILES * 6), "map": "data/levels/map4.tmx", "status": False},
-            {"id": "map2", "image": self.button_map2, "push_image": self.button_push_map2,
-             "pos": (TILES * 6, TILES * 8), "map": "data/levels/map2.tmx", "status": False},
-            {"id": "map3", "image": self.button_map3, "push_image": self.button_push_map3,
-             "pos": (TILES * 6, TILES * 10), "map": "data/levels/map3.tmx", "status": False},
+            {"id": "map1",
+             "title": "Level 1",
+             "image": self.button_map1,
+             "push_image": self.button_push_map1,
+             "pos": (TILES * 6, TILES * 6),
+             "map": "data/levels/map4.tmx",
+             "status": False
+             },
+            {"id": "map2",
+             "title": "Level 2",
+             "image": self.button_map2,
+             "push_image": self.button_push_map2,
+             "pos": (TILES * 6, TILES * 8),
+             "map": "data/levels/map2.tmx",
+             "status": False
+             },
+            {"id": "map3",
+             "title": "Level 3",
+             "image": self.button_map3,
+             "push_image": self.button_push_map3,
+             "pos": (TILES * 6, TILES * 10),
+             "map": "data/levels/map3.tmx",
+             "status": False
+             },
+            {"id": "map3",
+             "title": "Level 3",
+             "image": self.button_map3,
+             "push_image": self.button_push_map3,
+             "pos": (TILES * 6, TILES * 12),
+             "map": "data/levels/map3.tmx",
+             "status": False
+             },
+            {"id": "map3",
+             "title": "Level 3",
+             "image": self.button_map3,
+             "push_image": self.button_push_map3,
+             "pos": (TILES * 6, TILES * 14),
+             "map": "data/levels/map3.tmx",
+             "status": False
+             },
         ]
 
     def draw(self):
         """Рисуем меню с учетом нажатых кнопок."""
         self.screen.blit(self.background, (0, 0))
+
+
         for button in self.buttons:
             # Если кнопка нажата, рисуем нажатое изображение
             image = button["push_image"] if button["status"] else button["image"]
             self.screen.blit(image, button["pos"])
+
+        # Заголовок SCORES
+        font = pygame.font.Font(FREDOKA, 14)
+        text = font.render("SCORES", True, WHITE)
+        self.screen.blit(text, (TILES * 24, TILES * 5 - 8))
+
+        # Название игры
+        font = pygame.font.Font(FREDOKA, 50)
+        text = font.render("Cute farm", True, WHITE)
+        self.screen.blit(text, (TILES * 9, TILES * 25 - 8))
+
         pygame.display.flip()
 
 

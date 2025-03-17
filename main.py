@@ -2,6 +2,7 @@ import pygame
 from settings import BLACK, WIDTH, HEIGHT
 from game import Game
 from menu import MainMenu
+from game_over import GameOver
 
 
 if __name__ == "__main__":
@@ -21,3 +22,8 @@ if __name__ == "__main__":
     print(selected_map)
     game = Game(selected_map)
     game.run()
+
+    final_screen = GameOver(screen)
+    while selected_map is None:  # Пока не выбрана карта
+        final_screen.draw()
+        selected_map = (final_screen.handle_events())
