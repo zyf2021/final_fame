@@ -1,6 +1,7 @@
 import pygame
 import sys
-from settings import WIDTH, HEIGHT, TILES, PATH_TO_FINISH_MENU, BLACK, WHITE, FREDOKA
+from settings import WIDTH, HEIGHT, TILES, PATH_TO_FINISH_MENU, BLACK, WHITE, FREDOKA, PATH_TO_MENU_BTN, PATH_TO_MENU_BTN_PUSH
+
 
 class GameOver:
     def __init__(self, screen):
@@ -8,12 +9,11 @@ class GameOver:
         self.background = pygame.image.load(PATH_TO_FINISH_MENU)
 
         self.score = 0
-        self.font = pygame.font.Font(None, 36)  # Шрифт для отображения счета
+        self.font = pygame.font.Font(FREDOKA, 36)  # Шрифт для отображения счета
 
         # Загружаем изображения кнопок
-        self.button_play = pygame.image.load("data/assets/btn_play.png")
-        self.button_play_push = pygame.image.load("data/assets/btn_play_push.png")
-        # self.button_exit = pygame.image.load("data/assets/button_exit.png")
+        self.button_play = pygame.image.load(PATH_TO_MENU_BTN)
+        self.button_play_push = pygame.image.load(PATH_TO_MENU_BTN_PUSH)
 
         # Координаты кнопок
         self.buttons = [
@@ -43,13 +43,15 @@ class GameOver:
         restart_text = fontH2.render("Play to start again", True, WHITE)
         self.screen.blit(restart_text, (TILES * 13 - 13, TILES * 18))
 
-
         for button in self.buttons:
             # Если кнопка нажата, рисуем нажатое изображение
             image = button["push_image"] if button["status"] else button["image"]
             self.screen.blit(image, button["pos"])
-        pygame.display.flip()
 
+            font = pygame.font.Font(FREDOKA, 12)
+            score_text = font.render(f"MENU", True, WHITE)
+            self.screen.blit(score_text, (button["pos"][0] + TILES * 2 + 8, button["pos"][1] + TILES))
+        pygame.display.flip()
 
     def handle_events(self):
         """Обрабатываем события (нажатия кнопок)."""
@@ -59,9 +61,9 @@ class GameOver:
                 sys.exit()
 
             elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_RETURN:
-                    return True  # Начинаем новую игру
-                elif event.key == pygame.K_ESCAPE:
+                # if event.key == pygame.K_RETURN:
+                #     return True  # Начинаем новую игру
+                if event.key == pygame.K_ESCAPE:
                     pygame.quit()
                     sys.exit()
 
@@ -75,7 +77,7 @@ class GameOver:
                         # Отрисовываем нажатие кнопки
                         self.draw()
                         pygame.time.delay(200)
-                        return (button["map"])  # Возвращаем выбранную карту
+                        return True  # (button["map"])  # Возвращаем выбранную карту
             elif event.type == pygame.MOUSEBUTTONUP:
                 for button in self.buttons:
                     button["status"] = False  # Сбрасываем все кнопки в обычное состояние

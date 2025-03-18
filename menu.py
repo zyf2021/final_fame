@@ -4,71 +4,84 @@ import pandas as pd
 import chardet
 from pygame.examples.aliens import Score
 
-from settings import WIDTH, HEIGHT, TILES, FREDOKA, PATH_TO_START_MENU, WHITE, PATH_TO_DATA_SCORE
+from settings import WIDTH, HEIGHT, TILES, FREDOKA, PATH_TO_START_MENU, WHITE, PATH_TO_DATA_SCORE, LEVEL_BUTTONS, LIST_LEVELS
 from datetime import datetime
 
 class MainMenu:
     def __init__(self, screen):
         self.screen = screen
-
         self.scores = self.load_scores()
-
         self.background = pygame.image.load(PATH_TO_START_MENU)
+        self.font = pygame.font.Font(FREDOKA, 14)
 
-        # Загружаем изображения кнопок
-        self.button_map1 = pygame.image.load("data/assets/button.png")
-        self.button_map2 = pygame.image.load("data/assets/button.png")
-        self.button_map3 = pygame.image.load("data/assets/button.png")
-
-        self.button_push_map1 = pygame.image.load("data/assets/button_push.png")
-        self.button_push_map2 = pygame.image.load("data/assets/button_push.png")
-        self.button_push_map3 = pygame.image.load("data/assets/button_push.png")
+        # # Загружаем изображения кнопок
+        # self.button_map1 = pygame.image.load("data/assets/button.png")
+        # self.button_map2 = pygame.image.load("data/assets/button.png")
+        # self.button_map3 = pygame.image.load("data/assets/button.png")
+        #
+        # self.button_push_map1 = pygame.image.load("data/assets/button_push.png")
+        # self.button_push_map2 = pygame.image.load("data/assets/button_push.png")
+        # self.button_push_map3 = pygame.image.load("data/assets/button_push.png")
 
         # self.button_exit = pygame.image.load("data/assets/button_exit.png")
 
         # Координаты кнопок
-        self.buttons = [
-            {"id": "map1",
-             "title": "Level 1",
-             "image": self.button_map1,
-             "push_image": self.button_push_map1,
-             "pos": (TILES * 6, TILES * 6),
-             "map": "data/levels/map4.tmx",
-             "status": False
-             },
-            {"id": "map2",
-             "title": "Level 2",
-             "image": self.button_map2,
-             "push_image": self.button_push_map2,
-             "pos": (TILES * 6, TILES * 8),
-             "map": "data/levels/map5.tmx",
-             "status": False
-             },
-            {"id": "map3",
-             "title": "Level 3",
-             "image": self.button_map3,
-             "push_image": self.button_push_map3,
-             "pos": (TILES * 6, TILES * 10),
-             "map": "data/levels/map3.tmx",
-             "status": False
-             },
-            {"id": "map3",
-             "title": "Level 3",
-             "image": self.button_map3,
-             "push_image": self.button_push_map3,
-             "pos": (TILES * 6, TILES * 12),
-             "map": "data/levels/map3.tmx",
-             "status": False
-             },
-            {"id": "map3",
-             "title": "Level 3",
-             "image": self.button_map3,
-             "push_image": self.button_push_map3,
-             "pos": (TILES * 6, TILES * 14),
-             "map": "data/levels/map3.tmx",
-             "status": False
-             },
-        ]
+        # self.buttons = [
+        #     {"id": "1",
+        #      "title": "Level 1",
+        #      "image": self.button_map1,
+        #      "push_image": self.button_push_map1,
+        #      "pos": (TILES * 6, TILES * 6),
+        #      "map": "data/levels/map4.tmx",
+        #      "status": False
+        #      },
+        #     {"id": "2",
+        #      "title": "Level 2",
+        #      "image": self.button_map2,
+        #      "push_image": self.button_push_map2,
+        #      "pos": (TILES * 6, TILES * 8),
+        #      "map": "data/levels/map5.tmx",
+        #      "status": False
+        #      },
+        #     {"id": "3",
+        #      "title": "Level 3",
+        #      "image": self.button_map3,
+        #      "push_image": self.button_push_map3,
+        #      "pos": (TILES * 6, TILES * 10),
+        #      "map": "data/levels/map6.tmx",
+        #      "status": False
+        #      },
+        #     {"id": "4",
+        #      "title": "Level 3",
+        #      "image": self.button_map3,
+        #      "push_image": self.button_push_map3,
+        #      "pos": (TILES * 6, TILES * 12),
+        #      "map": "data/levels/map3.tmx",
+        #      "status": False
+        #      },
+        #     {"id": "5",
+        #      "title": "Level 3",
+        #      "image": self.button_map3,
+        #      "push_image": self.button_push_map3,
+        #      "pos": (TILES * 6, TILES * 14),
+        #      "map": "data/levels/map3.tmx",
+        #      "status": False
+        #      },
+        # ]
+
+        self.buttons = []
+        for i, level in enumerate(LIST_LEVELS):
+            self.buttons.append({
+                "id": level["id"],
+                "title": level["title"],
+                "font_pos": (TILES * 8 + 8, TILES * (6 + i * 2) + 6),
+                "image": pygame.image.load(LEVEL_BUTTONS[level["id"]]["image"]),
+                "push_image": pygame.image.load(LEVEL_BUTTONS[level["id"]]["push_image"]),
+                "pos": (TILES * 6, TILES * (6 + i * 2)),
+                "map": level["map"],
+                "status": False
+            })
+        print(self.buttons)
 
     # Загрузка данных из CSV
     def load_scores(self):
@@ -86,22 +99,20 @@ class MainMenu:
             # Если кнопка нажата, рисуем нажатое изображение
             image = button["push_image"] if button["status"] else button["image"]
             self.screen.blit(image, button["pos"])
+            text = self.font.render(button["title"], True, WHITE)
+            self.screen.blit(text, button["font_pos"])
 
-        # Заголовок SCORES
-        font = pygame.font.Font(FREDOKA, 14)
-        text = font.render("SCORES", True, WHITE)
+        text = self.font.render("SCORES", True, WHITE)
         self.screen.blit(text, (TILES * 24, TILES * 5 - 8))
 
         y_offset = TILES * 6
         # Отображаем каждый результат из CSV
         for date, score in self.scores.sort_values(ascending=False, by= "score")[:7].itertuples(index=False):
-            date = datetime.fromisoformat(date).strftime("%d %B %Y, %H:%M")
-
+            # date = datetime.fromisoformat(date).strftime("%d %B %Y, %H:%M")
             score_text = f"{score}"
-            score_surface = font.render(score_text, True, WHITE)
+            score_surface = self.font.render(score_text, True, WHITE)
             self.screen.blit(score_surface, (TILES * 20 + 60, y_offset))
             y_offset += 24
-
 
         # Название игры
         font = pygame.font.Font(FREDOKA, 50)
@@ -129,10 +140,10 @@ class MainMenu:
                         # Отрисовываем нажатие кнопки
                         self.draw()
                         pygame.time.delay(200)
-                        return(button["map"])  # Возвращаем выбранную карту
+                        return(button["map"], button['id'])  # Возвращаем выбранную карту
 
             if event.type == pygame.MOUSEBUTTONUP:
                 for button in self.buttons:
                     button["status"] = False # Сбрасываем все кнопки в обычное состояние
 
-        return None
+        return None, None
