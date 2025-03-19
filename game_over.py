@@ -1,6 +1,6 @@
 import pygame
 import sys
-from settings import WIDTH, HEIGHT, TILES, PATH_TO_FINISH_MENU, BLACK, WHITE, FREDOKA, PATH_TO_MENU_BTN, PATH_TO_MENU_BTN_PUSH
+from settings import TILES, PATH_TO_FINISH_MENU, WHITE, FREDOKA, PATH_TO_MENU_BTN, PATH_TO_MENU_BTN_PUSH
 
 
 class GameOver:
@@ -9,16 +9,17 @@ class GameOver:
         self.background = pygame.image.load(PATH_TO_FINISH_MENU)
 
         self.score = 0
-        self.font = pygame.font.Font(FREDOKA, 36)  # Шрифт для отображения счета
+        self.font = pygame.font.Font(FREDOKA, 36)
 
-        # Загружаем изображения кнопок
         self.button_play = pygame.image.load(PATH_TO_MENU_BTN)
         self.button_play_push = pygame.image.load(PATH_TO_MENU_BTN_PUSH)
-
-        # Координаты кнопок
         self.buttons = [
-            {"id": "map1", "image": self.button_play, "push_image": self.button_play_push,
-             "pos": (TILES * 13, TILES * 22), "map": "data/levels/map4.tmx", "status": False},
+            {"id": "map1",
+             "image": self.button_play,
+             "push_image": self.button_play_push,
+             "pos": (TILES * 13, TILES * 22),
+             "map": "data/levels/map4.tmx",
+             "status": False},
         ]
 
     def draw(self):

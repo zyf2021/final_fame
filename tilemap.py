@@ -2,7 +2,7 @@ import pygame
 import pytmx
 from items import Item
 from enemy import Enemy
-from settings import PATH_TO_ITEM, PATH_TO_BACKGROUND_IMAGE
+from settings import PATH_TO_BACKGROUND_IMAGE
 
 
 class GameMap:
@@ -69,10 +69,7 @@ class GameMap:
 
     def draw(self, screen, camera):
         """Отображение карты с фоном и слоями"""
-        # Рисуем статичный фон
         self.draw_background(screen, camera)
-
-        # Отображаем все слои карты
         for layer in self.tmx_data.visible_layers:
             if isinstance(layer, pytmx.TiledTileLayer):
                 for x, y, gid in layer:

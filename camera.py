@@ -13,8 +13,6 @@ class Camera:
 
     def update(self, target):
         """Следит за игроком и ограничивает движение камеры"""
-        # self.offset_x = target.abs_x - WIDTH // 2
-        # self.offset_y = target.abs_y - HEIGHT // 2
         self.offset_x = (target.abs_x + target.rect.width // 2 - WIDTH // 2)
         self.offset_y = (target.abs_y + target.rect.height // 2 - HEIGHT // 2)
 

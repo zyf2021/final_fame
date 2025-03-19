@@ -1,19 +1,18 @@
 import pygame
 from settings import PLAYER_SPEED, PLAYER_ANIMATION_SPEED, TILES
 
+
 class Player(pygame.sprite.Sprite):
     def __init__(self, x, y, sprite_sheet, gamemap, enemies):
         super().__init__()
-        # Загружаем спрайт-лист и режем его
         self.sprites = self.load_sprites(sprite_sheet)
+
         # Начальные параметры
-        self.direction = "down"  # Стартовое направление
-        self.frame_index = 0  # Индекс кадра анимации
-        self.animation_timer = 0  # Время смены кадров
+        self.direction = "down"
+        self.frame_index = 0
+        self.animation_timer = 0
         self.speed = PLAYER_SPEED
-
-        self.score = 0  # Счетчик очков
-
+        self.score = 0
         self.abs_x = x
         self.abs_y = y
 
@@ -25,12 +24,12 @@ class Player(pygame.sprite.Sprite):
 
     def load_sprites(self, sprite_sheet):
         """Разрезает спрайт-лист на кадры и создает словарь анимаций."""
-        sprite_size = TILES  # Размер одного кадра
+        sprite_size = TILES
         sprites = {
-            "down": [],  # Вниз (первая строка)
-            "up": [],  # Вверх (вторая строка)
-            "left": [],  # Влево (третья строка)
-            "right": []  # Вправо (четвертая строка)
+            "down": [],
+            "up": [],
+            "left": [],
+            "right": []
         }
 
         for row, direction in enumerate(sprites.keys()):
@@ -46,33 +45,30 @@ class Player(pygame.sprite.Sprite):
         """Обновляет движение и анимацию игрока."""
         dx, dy = 0, 0
         # Определяем направление движения
-        if keys[pygame.K_w]:  # Вверх
+        if keys[pygame.K_w]:
             self.direction = "up"
             dy = -self.speed
-        elif keys[pygame.K_s]:  # Вниз
+        elif keys[pygame.K_s]:
             self.direction = "down"
             dy = self.speed
-        elif keys[pygame.K_a]:  # Влево
+        elif keys[pygame.K_a]:
             self.direction = "left"
             dx = -self.speed
-        elif keys[pygame.K_d]:  # Вправо
+        elif keys[pygame.K_d]:
             self.direction = "right"
             dx = self.speed
 
         # Проверяем, можно ли идти
         new_abs_x = self.abs_x + dx
         new_abs_y = self.abs_y + dy
-
         new_rect = pygame.Rect(new_abs_x, new_abs_y, self.rect.width, self.rect.height)
-
-        if self.gamemap.check_walkable(new_rect): # чтобы не было сдви
+        if self.gamemap.check_walkable(new_rect):
             self.abs_x = new_abs_x
             self.abs_y = new_abs_y
 
-        # проверить нужны ли rect
+        # rect ломают столкновения
         # self.rect.x = self.abs_x
         # self.rect.y = self.abs_y
-        # ds
 
         if dx != 0 or dy != 0:
             self.animate()

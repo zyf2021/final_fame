@@ -1,10 +1,7 @@
 import pygame
-from settings import BLACK, WIDTH, HEIGHT, LIST_LEVELS
+from settings import WIDTH, HEIGHT, LIST_LEVELS
 from game import Game
 from menu import MainMenu
-from game_over import GameOver
-from settings import LIST_LEVELS
-
 
 if __name__ == "__main__":
     pygame.init()
@@ -25,7 +22,7 @@ if __name__ == "__main__":
         result = game.run()  # Запускаем игру и получаем результат
 
         if result == "menu":  # Если игрок нажал кнопку "Меню"
-            selected_map = None # обнуляем текущие карты
+            selected_map = None  # Обнуляем текущие карты
             selected_id = None
             continue  # Возвращаемся в главное меню и втыкаемся в цикл
 
@@ -35,10 +32,6 @@ if __name__ == "__main__":
 
             if next_map:
                 selected_map, selected_id = next_map, str(next_level)
-            # else:
-            #     final = GameOver(screen)
-            #     final.draw()  # Показываем финальное окно
-            #     break
 
         elif result == "quit":  # Если игрок закрыл игру
             print('попали в выход')

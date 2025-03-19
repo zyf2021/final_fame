@@ -1,11 +1,9 @@
 import pygame
 import sys
-import pandas as pd
 import chardet
-from pygame.examples.aliens import Score
-
-from settings import WIDTH, HEIGHT, TILES, FREDOKA, PATH_TO_START_MENU, WHITE, PATH_TO_DATA_SCORE, LEVEL_BUTTONS, LIST_LEVELS
-from datetime import datetime
+import pandas as pd
+from settings import TILES, FREDOKA, PATH_TO_START_MENU, WHITE
+from settings import PATH_TO_DATA_SCORE, LEVEL_BUTTONS, LIST_LEVELS
 
 class MainMenu:
     def __init__(self, screen):
@@ -13,61 +11,6 @@ class MainMenu:
         self.scores = self.load_scores()
         self.background = pygame.image.load(PATH_TO_START_MENU)
         self.font = pygame.font.Font(FREDOKA, 14)
-
-        # # Загружаем изображения кнопок
-        # self.button_map1 = pygame.image.load("data/assets/button.png")
-        # self.button_map2 = pygame.image.load("data/assets/button.png")
-        # self.button_map3 = pygame.image.load("data/assets/button.png")
-        #
-        # self.button_push_map1 = pygame.image.load("data/assets/button_push.png")
-        # self.button_push_map2 = pygame.image.load("data/assets/button_push.png")
-        # self.button_push_map3 = pygame.image.load("data/assets/button_push.png")
-
-        # self.button_exit = pygame.image.load("data/assets/button_exit.png")
-
-        # Координаты кнопок
-        # self.buttons = [
-        #     {"id": "1",
-        #      "title": "Level 1",
-        #      "image": self.button_map1,
-        #      "push_image": self.button_push_map1,
-        #      "pos": (TILES * 6, TILES * 6),
-        #      "map": "data/levels/map4.tmx",
-        #      "status": False
-        #      },
-        #     {"id": "2",
-        #      "title": "Level 2",
-        #      "image": self.button_map2,
-        #      "push_image": self.button_push_map2,
-        #      "pos": (TILES * 6, TILES * 8),
-        #      "map": "data/levels/map5.tmx",
-        #      "status": False
-        #      },
-        #     {"id": "3",
-        #      "title": "Level 3",
-        #      "image": self.button_map3,
-        #      "push_image": self.button_push_map3,
-        #      "pos": (TILES * 6, TILES * 10),
-        #      "map": "data/levels/map6.tmx",
-        #      "status": False
-        #      },
-        #     {"id": "4",
-        #      "title": "Level 3",
-        #      "image": self.button_map3,
-        #      "push_image": self.button_push_map3,
-        #      "pos": (TILES * 6, TILES * 12),
-        #      "map": "data/levels/map3.tmx",
-        #      "status": False
-        #      },
-        #     {"id": "5",
-        #      "title": "Level 3",
-        #      "image": self.button_map3,
-        #      "push_image": self.button_push_map3,
-        #      "pos": (TILES * 6, TILES * 14),
-        #      "map": "data/levels/map3.tmx",
-        #      "status": False
-        #      },
-        # ]
 
         self.buttons = []
         for i, level in enumerate(LIST_LEVELS):
@@ -107,6 +50,7 @@ class MainMenu:
 
         y_offset = TILES * 6
         # Отображаем каждый результат из CSV
+        self.scores = self.load_scores()
         for date, score in self.scores.sort_values(ascending=False, by= "score")[:7].itertuples(index=False):
             # date = datetime.fromisoformat(date).strftime("%d %B %Y, %H:%M")
             score_text = f"{score}"
@@ -136,14 +80,13 @@ class MainMenu:
                     bw, bh = button["image"].get_size()
 
                     if bx <= x <= bx + bw and by <= y <= by + bh:
-                        button["status"] = True  # Отмечаем кнопку как нажатую
-                        # Отрисовываем нажатие кнопки
+                        button["status"] = True
                         self.draw()
                         pygame.time.delay(200)
-                        return(button["map"], button['id'])  # Возвращаем выбранную карту
+                        return(button["map"], button['id'])
 
             if event.type == pygame.MOUSEBUTTONUP:
                 for button in self.buttons:
-                    button["status"] = False # Сбрасываем все кнопки в обычное состояние
+                    button["status"] = False
 
         return None, None

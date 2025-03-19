@@ -1,15 +1,13 @@
 import pygame
-import pytmx
 from datetime import datetime
 import pandas as pd
 import chardet
 from tilemap import GameMap
-from settings import BLACK, WIDTH, HEIGHT, BRAUN, WHITE, WIN_SCORE, FREDOKA, PATH_TO_SCORE_TABLE, \
-    PATH_TO_DATA_SCORE, TILES, \
-    PATH_TO_PLAYER, PATH_TO_MENU_BTN, PATH_TO_MENU_BTN_PUSH, LIST_LEVELS
+from settings import WIDTH, HEIGHT, BRAUN, WHITE, FREDOKA, PATH_TO_SCORE_TABLE
+from settings import PATH_TO_DATA_SCORE, TILES
+from settings import PATH_TO_PLAYER, PATH_TO_MENU_BTN, PATH_TO_MENU_BTN_PUSH, LIST_LEVELS
 from player import Player
 from game_over import GameOver
-from items import Item
 from camera import Camera
 from spark import Spark
 from dialog import LevelCompleteDialog
@@ -62,8 +60,6 @@ class Game:
         player_sprite_sheet = pygame.image.load(PATH_TO_PLAYER).convert_alpha()
         # Начальные координаты игрока
         self.player = Player(self.pos_enter_x, self.pos_enter_y, player_sprite_sheet, self.game_map, self.enemies)
-
-        # ЗАЧЕМ?
         self.all_sprites = pygame.sprite.Group()
         self.all_sprites.add(self.player)
 
@@ -163,20 +159,18 @@ class Game:
                     for button in self.buttons:
                         button["status"] = False  # Сбрасываем все кнопки в обычное состояние
 
-            # Обновляет состояние игры (игрок, анимации)
+            # Обновляет состояние игры
             keys = pygame.key.get_pressed()
             self.all_sprites.update(keys)
             self.enemies.update()
-            self.items.update(self.camera)  # ВАЖНО! Перед столкновением
+            self.items.update(self.camera)
 
-            # Проверяем сбор предметов (с искрами)
+            # Проверяем сбор предметов с искрами. Столкновение через collide
             collected_items = pygame.sprite.spritecollide(self.player, self.items, True)
             for item in collected_items:
                 spark = Spark(item.rect.centerx, item.rect.centery, self.spark_sprite_sheet)
                 self.effects.add(spark)
             self.score += len(collected_items)
-
-            # Проверяем уничтожение врагов (с искрами)
             collected_enemies = pygame.sprite.spritecollide(self.player, self.enemies, True)
             for enemy in collected_enemies:
                 spark = Spark(enemy.rect.centerx, enemy.rect.centery, self.spark_sprite_sheet)

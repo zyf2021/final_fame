@@ -1,5 +1,5 @@
 import pygame
-from settings import TILES, ENEMY_SPEED, PATH_TO_ENEMY
+from settings import TILES, PATH_TO_ENEMY
 
 class Enemy(pygame.sprite.Sprite):
     def __init__(self, x, y):

@@ -1,5 +1,6 @@
 import pygame
 
+
 class Spark(pygame.sprite.Sprite):
     def __init__(self, x, y, sprite_sheet, frame_size=(16, 16), frame_count=4, speed=4):
         super().__init__()

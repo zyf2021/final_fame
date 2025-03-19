@@ -1,27 +1,21 @@
 import pygame
-import sys
-from settings import PATH_TO_DIALOG_MENU, PATH_TO_YES_BTN, PATH_TO_YES_BTN_PUSH, FREDOKA, PATH_TO_NO_BTN, \
-    PATH_TO_NO_BTN_PUSH
-from settings import TILES, WHITE
+from settings import PATH_TO_DIALOG_MENU, PATH_TO_YES_BTN, PATH_TO_YES_BTN_PUSH, PATH_TO_NO_BTN, PATH_TO_NO_BTN_PUSH
+from settings import TILES, WHITE, FREDOKA
 
 
 class LevelCompleteDialog:
     def __init__(self, screen, score):
         self.screen = screen
         self.score = score
-        # self.level = level
-        # self.total_levels = total_levels
 
         self.background = pygame.image.load(PATH_TO_DIALOG_MENU)
-        self.font = pygame.font.Font(FREDOKA, 13)  # Шрифт для отображения счета
+        self.font = pygame.font.Font(FREDOKA, 13)
 
         # Загружаем изображения кнопок
         self.button_yes = pygame.image.load(PATH_TO_YES_BTN)
         self.button_yes_push = pygame.image.load(PATH_TO_YES_BTN_PUSH)
         self.button_no = pygame.image.load(PATH_TO_NO_BTN)
         self.button_no_push = pygame.image.load(PATH_TO_NO_BTN_PUSH)
-
-        # Координаты кнопок
         self.buttons = [
             {"id": "yes",
              "title": "YES",
@@ -30,7 +24,7 @@ class LevelCompleteDialog:
              "pos": (TILES * 10, TILES * 20),
              "status": False},
             {"id": "no",
-             "title": "NO",  # Исправлено: добавлена запятая
+             "title": "NO",
              "image": self.button_no,
              "push_image": self.button_no_push,
              "pos": (TILES * 16, TILES * 20),
